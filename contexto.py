@@ -33,7 +33,7 @@ def app():
         """)
 
 
-    st.write('Você encontra todos os códigos usados para construir esse projeto no Github COLOCAR O GITHUB AQUI.')
+    st.write('Você encontra todos os códigos usados para construir esse projeto no [Github](https://github.com/rafaelnmaldonado/tech_4)')
 
     st.write('**Abaixo deixamos a lista de referências usadas no projeto:**')
     st.write("""
