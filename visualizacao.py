@@ -18,8 +18,8 @@ def app():
     df_cotacoes = pd.DataFrame({indice: dados_acao['Close']}).reset_index()
     df_cotacoes.columns = ['Date', indice]
     df_cotacoes['Date'] = df_cotacoes['Date'].dt.strftime('%Y-%m-%d')
-    df_cotacoes = df_cotacoes.rename(columns={'BZ=F': 'Valor por barril'})
-    df_cotacoes = df_cotacoes.rename(columns={'Date': 'Periodo'})
+    df_cotacoes = df_cotacoes.rename(columns={'BZ=F': 'Valor por barril (US$)'})
+    df_cotacoes = df_cotacoes.rename(columns={'Date': 'Período'})
 
 
     st.subheader('Recorte ao longo de 15 anos')
@@ -37,12 +37,12 @@ def app():
 
     col1.dataframe(df_cotacoes)
 
-    df_cotacoes['Periodo'] = pd.to_datetime(df_cotacoes['Periodo'])
+    df_cotacoes['Período'] = pd.to_datetime(df_cotacoes['Período'])
 
 
     fig = px.line(df_cotacoes,
-                x="Periodo",
-                y="Valor por barril",
+                x="Período",
+                y="Valor por barril (US$)",
                 )
     col2.plotly_chart(fig, use_container_width=True, height=500, width=2000)
 
@@ -51,21 +51,21 @@ def app():
     st.subheader("Recorte ano selecionado")
     st.write('Sabemos que depois de olhar o gráfico completo, talvez você sinta curiosidade em entender o que aconteceu em determinado ano, por isso lhe damos a opção de visualizar os preços do barril de petróleo tipo BRENT em um ano específico,então é só escolher um ano e se aprofundar nos dados:')
 
-    unique_years = df_cotacoes['Periodo'].dt.year.unique()
+    unique_years = df_cotacoes['Período'].dt.year.unique()
     selected_year = st.selectbox("Selecione o ano:", unique_years, format_func=lambda x: str(x))
-    filtered_df = df_cotacoes[df_cotacoes['Periodo'].dt.year == selected_year]
+    filtered_df = df_cotacoes[df_cotacoes['Período'].dt.year == selected_year]
 
 
     if(selected_year) > 0:
 
         col1, col2 = st.columns(2)
 
-        filtered_df['Periodo'] = filtered_df['Periodo'].dt.strftime('%Y-%m-%d')
+        filtered_df['Período'] = filtered_df['Período'].dt.strftime('%Y-%m-%d')
 
 
         fig = px.line(filtered_df,
-                    x="Periodo",
-                    y="Valor por barril",
+                    x="Período",
+                    y="Valor por barril (US$)",
                     )
 
         col2.plotly_chart(fig, use_container_width=True, height=500, width=2000)

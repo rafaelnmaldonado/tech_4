@@ -13,7 +13,7 @@ def app():
     
     st.write('A previsão de preços de petróleo representa um desafio significativo devido à sua alta variância e inconstância. Essa volatilidade é influenciada por uma miríade de fatores, incluindo eventos geopolíticos, variações na oferta e demanda, e flutuações econômicas globais. Para enfrentar esse desafio, utilizamos a abordagem de séries temporais, um método poderoso e amplamente utilizado para análise e previsão de dados sequenciais ao longo do tempo.')
 
-    st.write('Foram utilizados, para esta previsão, os dados históricos de preços (em R$) desde 2009, conforme o gráfico a seguir:')
+    st.write('Foram utilizados, para esta previsão, os dados históricos de preços (em US$) desde 2009, conforme o gráfico a seguir:')
 
     DATA_FINAL_TREINO = '11-01-2023'
     indice = "BZ=F"
@@ -68,9 +68,9 @@ def app():
                 index=reg.feature_names_in_,
                 columns=['relevancia'])
 
-    df_cotacoes.rename(columns={'y': 'Valor por barril (R$)'}, inplace=True)
+    df_cotacoes.rename(columns={'y': 'Valor por barril (US$)'}, inplace=True)
     df_cotacoes['Período'] = df_cotacoes.index
-    st.line_chart(df_cotacoes, x='Período', y='Valor por barril (R$)')
+    st.line_chart(df_cotacoes, x='Período', y='Valor por barril (US$)')
     
     st.subheader('Conjunto de Dados e Preparo')
     st.write('Dada a natureza volátil dos preços do petróleo, uma atenção especial foi dedicada ao preparo dos conjuntos de dados de treinamento e teste. O conjunto de treinamento foi substancialmente maior que o de teste. Essa decisão foi baseada na necessidade de fornecer ao modelo uma quantidade significativa de dados históricos para capturar os padrões complexos e as tendências subjacentes aos preços do petróleo.')
