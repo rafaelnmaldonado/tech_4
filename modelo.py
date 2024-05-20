@@ -25,11 +25,11 @@ def app():
     df.rename(columns={'BZ=F': 'y'}, inplace=True)
     treino = df.loc[df.index < DATA_FINAL_TREINO]
     teste = df.loc[df.index >= DATA_FINAL_TREINO]
-
-    fig, ax = plt.subplots(figsize=(18,6))
-    treino.plot(ax=ax, label='Conjunto de treinamento', title='Dados de treino e teste')
-    teste.plot(ax=ax, label='Conjunto de teste')
-    ax.legend(['Conjunto de treinamento', 'Conjunto de teste'])
+    
+    df_treino_teste = df_cotacoes.copy()
+    df_treino_teste['Conjunto de treinamento'] = treino
+    df_treino_teste['Conjunto de teste'] = teste
+    df_treino_teste = df_treino_teste[['Conjunto de treinamento', 'Conjunto de teste']]
 
     def adiciona_periodos(df):
         df = df.copy()
@@ -68,12 +68,15 @@ def app():
                 index=reg.feature_names_in_,
                 columns=['relevancia'])
 
-    st.line_chart(df_cotacoes)
+    df_cotacoes.rename(columns={'y': 'Valor por barril (R$)'}, inplace=True)
+    df_cotacoes['Período'] = df_cotacoes.index
+    st.line_chart(df_cotacoes, x='Período', y='Valor por barril (R$)')
     
     st.subheader('Conjunto de Dados e Preparo')
     st.write('Dada a natureza volátil dos preços do petróleo, uma atenção especial foi dedicada ao preparo dos conjuntos de dados de treinamento e teste. O conjunto de treinamento foi substancialmente maior que o de teste. Essa decisão foi baseada na necessidade de fornecer ao modelo uma quantidade significativa de dados históricos para capturar os padrões complexos e as tendências subjacentes aos preços do petróleo.')
     
-    st.pyplot(fig)
+    df_treino_teste['Período'] = df_treino_teste.index
+    st.line_chart(df_treino_teste, x='Período', y=['Conjunto de treinamento', 'Conjunto de teste'])
     
     st.subheader('Abordagem de Séries Temporais')
     st.write('A escolha da abordagem de séries temporais para este problema foi baseada em várias razões fundamentais. Primeiramente, os preços do petróleo são inerentemente sequenciais, com cada valor dependente dos valores anteriores, o que torna a análise temporal particularmente apropriada. As séries temporais permitem modelar as dependências e autocorrelações dentro dos dados, capturando tanto padrões de curto prazo quanto tendências de longo prazo.')
@@ -89,7 +92,11 @@ def app():
 
     st.subheader('Resultados')
     
-    st.pyplot(fig)
+    df = df[['y', 'resultado']]
+    df.rename(columns={'y': 'Dados', 'resultado': 'Previsão'}, inplace=True)
+    df['Período'] = df.index
+    
+    st.line_chart(df, x='Período', y=['Dados', 'Previsão'])
     st.text(f'MAPE: {mape*100:.3f}%')
     
     st.write('Os resultados da previsão foram satisfatórios. O modelo conseguiu capturar com precisão as tendências gerais e algumas flutuações significativas dos preços do petróleo. A avaliação do desempenho foi realizada utilizando a métrica MAPE (Erro Percentual Absoluto Médio).')

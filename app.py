@@ -8,7 +8,7 @@ import plotly.graph_objects as go
 from streamlit_option_menu import option_menu
 import os
 
-import contexto, modelo, visualizacao
+import contexto, modelo, visualizacao, insights
 st.set_page_config(
         page_title="Estudo do preço do petróleo",
 )
@@ -32,7 +32,7 @@ class MultiApp:
         with st.sidebar:        
             app = option_menu(
                 menu_title='Menu ',
-                options=['Contexto','Visualização','Modelo'],
+                options=['Contexto','Visualização','Modelo', 'Insights'],
                 menu_icon='chat-text-fill',
                 default_index=1,
                 styles={
@@ -52,6 +52,8 @@ class MultiApp:
             modelo.app()        
         if app == 'Visualização':
             visualizacao.app() 
+        if app == 'Insights':
+            insights.app()
 
 multi_app = MultiApp()
 multi_app.run()         
